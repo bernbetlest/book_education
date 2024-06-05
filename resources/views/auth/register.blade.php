@@ -26,6 +26,7 @@
             padding: 20px;
             background-color: white;
             margin-top: 50px;
+            margin-bottom: 75px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -39,6 +40,15 @@
     <!-- Sign Up Form Container -->
     <div class="container signup-container">
         <h2 class="text-center mb-4">Sign Up</h2>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <form action="{{route('register')}}" method="post">
         @csrf
             <div class="mb-3">
@@ -50,8 +60,8 @@
                 <input type="text" class="form-control" name="lname" id="lname">
             </div>
             <div class="mb-3">
-                <label for="name" class="form-label">Username</label>
-                <input type="text" class="form-control" name="name">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" name="username">
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>

@@ -35,12 +35,15 @@
                     <div class="card">
                         <div class="card-body text-center">
                             <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-pic" id="profilePic">
-                            <h3 class="card-title">John Doe</h3>
-                            <p class="card-text">Username: johndoe</p>
-                            <p class="card-text">Email: johndoe@example.com</p>
-                            <p class="card-text">First Name: John</p>
-                            <p class="card-text">Last Name: Doe</p>
-                            <a href="/profile/edit" class="btn btn-primary">Edit Profile</a>
+                            <h3 class="card-title">{{Auth::user()->username}}</h3>
+                            <p class="card-text">Email: {{Auth::user()->email}}</p>
+                            <p class="card-text">First Name: {{Auth::user()->fname}}</p>
+                            <p class="card-text">Last Name: {{Auth::user()->lname}}</p>
+                            <p class="card-text">Address: {{Auth::user()->address ?? '-'}}</p>
+                            <p class="card-text">Phone Number: {{Auth::user()->phone ?? '-'}}</p>
+                            <p class="card-text">Date of Birth: {{Auth::user()->date_of_birth ?? '-'}}</p>
+
+                            <a href="{{route('profile.edit')}}" class="btn btn-primary">Edit Profile</a>
                         </div>
                     </div>
                 </div>
