@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
             $table->integer('quantity')->nullable(false)->default(0);
             $table->decimal('total', 8, 2)->nullable(false)->default(0);
-            $table->string('status')->nullable(false)->default('pending');
+            $table->enum('status', ['pending', 'completed'])->default('pending');
             $table->timestamps();
         });
     }
