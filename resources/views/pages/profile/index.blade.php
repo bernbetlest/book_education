@@ -34,7 +34,11 @@
                 <div class="col-lg-6">
                     <div class="card">
                         <div class="card-body text-center">
+                            @if (Auth::user()->image)
+                                <img src="{{ asset('assets/images/' . Auth::user()->image) }}" alt="Profile Picture" class="profile-pic" id="profilePic">
+                            @else
                             <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-pic" id="profilePic">
+                            @endif
                             <h3 class="card-title">{{Auth::user()->username}}</h3>
                             <p class="card-text">Email: {{Auth::user()->email}}</p>
                             <p class="card-text">First Name: {{Auth::user()->fname}}</p>
@@ -42,8 +46,17 @@
                             <p class="card-text">Address: {{Auth::user()->address ?? '-'}}</p>
                             <p class="card-text">Phone Number: {{Auth::user()->phone ?? '-'}}</p>
                             <p class="card-text">Date of Birth: {{Auth::user()->date_of_birth ?? '-'}}</p>
-
+                            @if (Auth::user()->wallet)
+                            <p class="card-text">Wallet Balance: ${{Auth::user()->wallet->balance}}</p>
+                            @else
+                            <p class="card-text">Wallet Balance: $0</p>
+                            @endif
                             <a href="{{route('profile.edit')}}" class="btn btn-primary">Edit Profile</a>
+                            @if (Auth::user()->wallet)
+                                <a href="{{route('wallets.index')}}" class="btn btn-primary">View Wallet</a>
+                            @else
+                                <a href="{{route('wallets.create')}}" class="btn btn-primary">Create Wallet</a> 
+                            @endif
                         </div>
                     </div>
                 </div>

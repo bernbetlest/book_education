@@ -1,33 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Edit Profile</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{asset('assets/css/styles.css')}}" rel="stylesheet">
-    <style>
-        .profile-pic {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            display: block;
-            margin: 0 auto 20px;
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation-->
-    @include('components.navbar')
-    
-    <div class="text-center text-black my-2">
-        <h1 class="display-4 fw-bolder">Edit Profile</h1>
-        <p class="lead fw-normal text-black-50 mb-0">Update your personal information (If you don't want to change your profile information, then type your current ones)</p>
-    </div>
-
-    <!-- Edit Profile Form -->
-    <section class="py-5">
+@extends('pages.dashboard.layouts.template')
+@section('content')
+    <div class="content py-2">
+        <div class="text-center text-black my-2">
+             <h1 class="display-4 fw-bolder">Edit Your Profile</h1>
+             <p class="lead fw-normal text-black-50 mb-0">Update your personal information
+          <section class="py-2">
         <div class="container px-4 px-lg-5">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
@@ -68,8 +45,7 @@
                             <label for="address" class="form-label">Address</label>
                             <input type="text" class="form-control" name="address" id="address" value="{{Auth::user()->address}}" placeholder="Enter your address">
                         </div>
-
-                        <div class="mb-3">
+                         <div class="mb-3">
                             <label for="phone" class="form-label">Phone Number</label>
                             <input type="text" class="form-control" name="phone" id="phone" value="{{Auth::user()->phone}}" placeholder="Enter your phone number">
                         </div>
@@ -82,26 +58,12 @@
                             <button type="submit" class="btn btn-primary">Save Changes</button>
                             <button type="reset" class="btn btn-secondary">Reset</button>
                         </div>
+
                     </form>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
-    <script>
-        document.getElementById('profilePicInput').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('profilePic').src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    </script>
-</body>
-</html>
+    </div>
+@endsection

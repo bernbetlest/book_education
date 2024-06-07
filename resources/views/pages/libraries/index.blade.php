@@ -56,20 +56,14 @@
                                     <h5 class="fw-bolder">{{$book->title}}</h5>
                                      <!-- Product reviews-->
                                      <div class="d-flex justify-content-center small text-warning mb-2">
-                                      {{-- <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                     <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-half"></div> --}}
                                      </div>                                      
-                                    <!-- Product price-->
-                                    Rp{{$book->price}}
+
                                 </div>
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <div class="text-center">
-                                    <a class="btn btn-outline-dark mt-auto" href="#"    >Add to Cart</a>
+                                    <a class="btn btn-outline-dark mt-auto" href="{{route('libraries.show', $book)}}">View Book</a>
                                 </div>
                             </div>
                         </div>

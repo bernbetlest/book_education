@@ -14,14 +14,22 @@ class ProfileController extends Controller
 
     public function index(): View
     {
-        return view('pages.profile.index');
+        if (Auth::user()->role === 'admin') {
+            return view('pages.dashboard.profile.index');
+        } else {
+            return view('pages.profile.index');
+        }
     }
     /**
      * Display the user's profile form.
      */
     public function edit(): View
     {
-        return view('pages.profile.edit');
+        if (Auth::user()->role === 'admin') {
+            return view('pages.dashboard.profile.edit');
+        } else {
+            return view('pages.profile.edit');
+        }
     }
 
     /**
@@ -29,16 +37,34 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $user->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            $oldImage = public_path('assets/images/' . $user->image);
+            if ($user->image && file_exists($oldImage)) {
+                @unlink($oldImage);
+            }
+
+            // Store new image
+            $image = $request->file('image');
+            $imageName = $user->username . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('assets/images'), $imageName);
+
+            // Update user's image path in the database
+            $user->image = $imageName;
         }
 
-        $request->user()->save();
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        $user->save();
 
         return Redirect::route('profile.index')->with('status', 'profile-updated');
     }
+
 
     /**
      * Delete the user's account.

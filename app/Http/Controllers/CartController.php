@@ -6,6 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Sale;
 use App\Models\Book;
+use App\Models\Wallet;
+use App\Models\Transaction;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class CartController extends Controller
 {
@@ -51,13 +56,14 @@ class CartController extends Controller
         return redirect()->back()->with('success', 'Book added to cart successfully!');
     }
 
-
     public function destroy($id)
     {
         $cart = Sale::find($id);
-        $cart->delete();
-
-        return redirect()->route('carts.index');
+        if ($cart) {
+            $cart->delete();
+            return response()->json(['success' => true, 'message' => 'Item removed from cart successfully!']);
+        }
+        return response()->json(['success' => false, 'message' => 'Item not found in cart.'], 404);
     }
 
     public function update(Request $request, $id)
@@ -70,20 +76,28 @@ class CartController extends Controller
             return response()->json(['message' => 'Cart item not found.'], 404);
         }
 
-        // Cek apakah Book item ada
+        // Check if Book item exists
         $book = Book::find($cart->book_id);
         if (!$book) {
             return response()->json(['message' => 'Book not found.'], 404);
         }
 
-        // Update quantity dan total
+        // Update quantity and total
         $cart->quantity = $request->quantity;
         $cart->total = $cart->quantity * $book->price;
 
-        // Simpan perubahan
+        // Save changes
         $cart->save();
 
-        // Berikan response yang sesuai
         return response()->json(['message' => 'Quantity updated successfully.']);
+    }
+
+    public function checkout(Request $request)
+    {
+        $request->validate([
+            'cartItems' => 'required|array',
+            'quantities' => 'required|array',
+            'quantities.*' => 'integer|min:1',
+        ]);
     }
 }

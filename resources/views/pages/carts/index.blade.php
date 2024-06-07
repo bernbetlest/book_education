@@ -16,32 +16,49 @@
             padding: 10px;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
         }
+        .cart-item img {
+            border-radius: 50%;
+        }
     </style>
 </head>
 <body>
-    <!-- Navigation-->
+    <!-- Navigation -->
     @include('components.navbar')
     
-    <!-- Cart Items-->
+    <!-- Cart Items -->
     <div class="container mt-5">
         <h2>Your Cart</h2>
-        <form id="cart-form">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            
+        @endif
+        <form id="cart-form" action="{{ route('sales.store') }}" method="POST">
             @csrf
             <div class="list-group mb-3">
                 @foreach ($carts as $cart)
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center cart-item" data-cart-id="{{ $cart->id }}">
+                        <div class="d-flex align-items-center">
                             <input type="checkbox" name="cartItems[]" value="{{ $cart->id }}" class="form-check-input me-2 cart-checkbox">
                             @if ($cart->book->image)
-                                <img src="{{ asset('assets/images/'. $cart->book->image) }}" alt="{{ $cart->book->title }}" width="50" height="50" class="rounded-circle me-2">     
+                                <img src="{{ asset('assets/images/'. $cart->book->image) }}" alt="{{ $cart->book->title }}" width="50" height="50" class="me-2">     
                             @else
-                                <img src="https://via.placeholder.com/150" alt="{{ $cart->book->title }}" width="50" height="50" class="rounded-circle me-2">                         
+                                <img src="https://via.placeholder.com/150" alt="{{ $cart->book->title }}" width="50" height="50" class="me-2">                         
                             @endif
-                            <strong>{{ $cart->book->title }}</strong> by {{ $cart->book->author }}
+                            <div>
+                                <strong>{{ $cart->book->title }}</strong> by {{ $cart->book->author }}
+                                <div>Price: Rp. <span class="book-price">{{ $cart->book->price }}</span></div>
+                            </div>
                         </div>
-                        <div>
-                            <input type="number" name="quantities[{{ $cart->id }}]" value="{{ $cart->quantity }}" min="1" class="form-control quantity-input" style="width: 80px;" data-cart-id="{{ $cart->id }}" data-price-per-item="{{ $cart->book->price }}">
-                            <span class="text-muted ms-2">Rp. <span class="item-price">{{ $cart->quantity * $cart->book->price }}</span></span>
+                        <div class="d-flex align-items-center">
+                            <input type="number" name="quantities[{{ $cart->id }}]" value="{{ $cart->quantity }}" min="1" class="form-control quantity-input me-2" style="width: 80px;" data-cart-id="{{ $cart->id }}" data-price-per-item="{{ $cart->book->price }}">
+                            <span class="text-muted me-2">Total: Rp. <span class="item-price">{{ $cart->quantity * $cart->book->price }}</span></span>
+                            <button type="button" class="btn btn-danger btn-sm remove-btn" data-cart-id="{{ $cart->id }}">Remove</button>
                         </div>
                     </div>
                 @endforeach
@@ -59,7 +76,8 @@
             const quantities = document.querySelectorAll('.quantity-input');
             const checkboxes = document.querySelectorAll('.cart-checkbox');
             const totalPriceElement = document.getElementById('total-price');
-
+            const removeButtons = document.querySelectorAll('.remove-btn');
+            
             function updateTotalPrice() {
                 let totalPrice = 0;
                 quantities.forEach(function (input) {
@@ -86,12 +104,33 @@
                     body: JSON.stringify({
                         quantity: quantity
                     })
-                }).then(response => response)
+                }).then(response => response.json())
                   .then(data => {
                       console.log(data);
                   }).catch(error => {
                       console.error('Error:', error);
                   });
+            }
+
+            function removeCartItem(cartId) {
+                fetch(`/carts/${cartId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                }).then(response => {
+                    return response.json();
+                }).then(data => {
+                    if (data.success) {
+                        const itemElement = document.querySelector(`[data-cart-id="${cartId}"]`);
+                        itemElement.remove();
+                        updateTotalPrice();
+                    } else {
+                        console.error('Error:', data.message);
+                    }
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
             }
 
             quantities.forEach(function (input) {
@@ -109,6 +148,15 @@
 
             checkboxes.forEach(function (checkbox) {
                 checkbox.addEventListener('change', updateTotalPrice);
+            });
+
+            removeButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    const cartId = button.dataset.cartId;
+                    if (confirm('Are you sure you want to remove this item from the cart?')) {
+                        removeCartItem(cartId);
+                    }
+                });
             });
 
             updateTotalPrice();

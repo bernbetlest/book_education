@@ -17,7 +17,6 @@ class Transaction extends Model
         'sale_id',
         'amount',
         'type',
-        'status',
     ];
 
     public function wallet(): BelongsTo
