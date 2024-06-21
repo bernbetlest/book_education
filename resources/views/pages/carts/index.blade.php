@@ -46,25 +46,25 @@
                         <div class="d-flex align-items-center">
                             <input type="checkbox" name="cartItems[]" value="{{ $cart->id }}" class="form-check-input me-2 cart-checkbox">
                             @if ($cart->book->image)
-                                <img src="{{ asset('assets/images/'. $cart->book->image) }}" alt="{{ $cart->book->title }}" width="50" height="50" class="me-2">     
+                                <img src="{{ asset('assets/images/books/'. $cart->book->image) }}" alt="{{ $cart->book->title }}" width="50" height="50" class="me-2">     
                             @else
                                 <img src="https://via.placeholder.com/150" alt="{{ $cart->book->title }}" width="50" height="50" class="me-2">                         
                             @endif
                             <div>
                                 <strong>{{ $cart->book->title }}</strong> by {{ $cart->book->author }}
-                                <div>Price: Rp. <span class="book-price">{{ $cart->book->price }}</span></div>
+                                <div>Price: $ <span class="book-price">{{ $cart->book->price }}</span></div>
                             </div>
                         </div>
                         <div class="d-flex align-items-center">
                             <input type="number" name="quantities[{{ $cart->id }}]" value="{{ $cart->quantity }}" min="1" class="form-control quantity-input me-2" style="width: 80px;" data-cart-id="{{ $cart->id }}" data-price-per-item="{{ $cart->book->price }}">
-                            <span class="text-muted me-2">Total: Rp. <span class="item-price">{{ $cart->quantity * $cart->book->price }}</span></span>
+                            <span class="text-muted me-2">Total: $ <span class="item-price">{{ $cart->quantity * $cart->book->price }}</span></span>
                             <button type="button" class="btn btn-danger btn-sm remove-btn" data-cart-id="{{ $cart->id }}">Remove</button>
                         </div>
                     </div>
                 @endforeach
             </div>
             <div class="cart-footer d-flex justify-content-between align-items-center">
-                <span>Total: Rp. <span id="total-price">0</span></span>
+                <span>Total: $ <span id="total-price">0</span></span>
                 <button type="submit" class="btn btn-primary">Checkout</button>
             </div>
         </form>

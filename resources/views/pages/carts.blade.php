@@ -40,13 +40,13 @@
                         </div>
                         <div>
                             <input type="number" name="quantities[{{ $item->id }}]" value="{{ $item->quantity }}" min="1" class="form-control quantity-input" style="width: 80px;">
-                            <span class="text-muted ms-2">Rp. <span class="item-price">{{ $item->quantity * $item->book->price }}</span></span>
+                            <span class="text-muted ms-2">$ <span class="item-price">{{ $item->quantity * $item->book->price }}</span></span>
                         </div>
                     </div>
                 @endforeach
             </div>
             <div class="cart-footer d-flex justify-content-between align-items-center">
-                <span>Total: Rp. <span id="total-price">0</span></span>
+                <span>Total: $ <span id="total-price">0</span></span>
                 <button type="submit" class="btn btn-primary">Checkout</button>
             </div>
         </form>

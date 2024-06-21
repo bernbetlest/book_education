@@ -24,7 +24,7 @@
         <div class="row">
             <div class="col-md-5">
                 @if ($book->image)
-                    <img src="{{ asset('assets/images/' . $book->image) }}" alt="{{ $book->title }}" class="img-fluid">
+                    <img src="{{ asset('assets/images/books/' . $book->image) }}" alt="{{ $book->title }}" class="img-fluid">
                 @else
                     <img src="https://via.placeholder.com/400x500" alt="{{ $book->title }}" class="img-fluid">
                 @endif

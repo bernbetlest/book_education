@@ -37,7 +37,7 @@
                 <div class="card text-white bg-danger mb-3">
                     <div class="card-header">Total Revenue</div>
                     <div class="card-body">
-                        <h5 class="card-title">Rp. {{ number_format($totalRevenue, 2) }}</h5>
+                        <h5 class="card-title">$ {{ number_format($totalRevenue, 2) }}</h5>
                         <p class="card-text">Total earnings</p>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                                         <td>{{ $sale->user->username }}</td>
                                         <td>{{ $sale->book->title }}</td>
                                         <td>{{ $sale->quantity }}</td>
-                                        <td>Rp. {{ number_format($sale->total, 2) }}</td>
+                                        <td>$ {{ number_format($sale->total, 2) }}</td>
                                         <td>{{ $sale->status }}</td>
                                     </tr>
                                 @endforeach
@@ -128,7 +128,7 @@
                                 @foreach ($topUsers as $user)
                                     <tr>
                                         <td>{{ $user->username }}</td>
-                                        <td>Rp. {{ number_format($user->total_spent, 2) }}</td>
+                                        <td>$ {{ number_format($user->total_spent, 2) }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

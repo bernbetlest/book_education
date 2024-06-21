@@ -45,7 +45,7 @@
                         <div class="card h-100">
                             <!-- Product image-->
                             @if ($book->image)
-                            <img class="card-img-top" src="{{ asset('assets/images/' . $book->image) }}" alt="Book Cover 1" />
+                            <img class="card-img-top" src="{{ asset('assets/images/books/' . $book->image) }}" alt="Book Cover 1" />
                             @else
                             <img class="card-img-top" src="{{ asset('assets/images/little-women.png') }}" alt="Book Cover 1" />
                             @endif

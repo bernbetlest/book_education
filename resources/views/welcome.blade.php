@@ -43,7 +43,7 @@
                         <div class="card h-100">
                             <!-- Product image-->
                             @if ($book->image)
-                                <img class="card-img-top" src="{{ asset('assets/images/' . $book->image) }}" alt="{{ $book->title }}" />
+                                <img class="card-img-top" src="{{ asset('assets/images/books/' . $book->image) }}" alt="{{ $book->title }}" />
                             @else
                                 <img class="card-img-top" src="{{ asset('assets/images/little-women.png') }}" alt="Default Book Cover" />
                             @endif
@@ -53,7 +53,7 @@
                                     <!-- Product name-->
                                     <h5 class="fw-bolder">{{ $book->title }}</h5>
                                     <!-- Product price-->
-                                    Rp{{ number_format($book->price, 0, ',', '.') }}
+                                    ${{ number_format($book->price, 0, ',', '.') }}
                                 </div>
                             </div>
                             <!-- Product actions-->
